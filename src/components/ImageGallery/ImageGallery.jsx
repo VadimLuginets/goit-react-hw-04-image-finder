@@ -12,7 +12,7 @@ export default class ImageGallery extends Component {
   };
   componentDidUpdate(prevProps, prevState) {
     if (this.props.query !== this.state.query) {
-      this.setState({ query: this.props.query, spiner: true });
+      this.setState({ query: this.props.query, spiner: true, page: 1 });
       const query = this.props.query;
       fetch(
         `https://pixabay.com/api/?key=29814541-7f5e674ca7517b50be2aff327&q=${query}&image_type=photo&page=1&per_page=12`
