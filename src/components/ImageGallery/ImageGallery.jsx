@@ -9,6 +9,7 @@ export default class ImageGallery extends Component {
     data: [],
     page: 1,
     spiner: false,
+    showBtn: false,
   };
   componentDidUpdate(prevProps, prevState) {
     if (this.props.query !== this.state.query) {
@@ -20,7 +21,7 @@ export default class ImageGallery extends Component {
         .then(res => res.json())
         .then(data => {
           console.log(data);
-          this.setState({ data: [...data.hits] });
+          this.setState({ data: [...data.hits], showBtn: true });
         })
         .catch(error => {
           console.log(error);
@@ -44,6 +45,7 @@ export default class ImageGallery extends Component {
         this.setState(s => ({
           data: [...s.data, ...data.hits],
           page: page + 1,
+          showBtn: true,
         }));
       })
       .catch(error => {
@@ -54,7 +56,7 @@ export default class ImageGallery extends Component {
       });
   };
   render() {
-    const { spiner } = this.state;
+    const { spiner, data, showBtn } = this.state;
     return (
       <div>
         {!spiner ? null : <Dna width={2200} height={2200} />}
@@ -64,7 +66,7 @@ export default class ImageGallery extends Component {
           ))}
         </Ul>
         {!spiner ? null : <Dna width={2200} height={2200} />}
-        <ButtonEl text={'Load more'} func={this.loadMore} />
+        {showBtn ? <ButtonEl text={'Load more'} func={this.loadMore} /> : null}
       </div>
     );
   }
