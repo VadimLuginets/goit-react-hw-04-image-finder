@@ -4,7 +4,7 @@ export default function Modal({ Url, onClick }) {
   return (
     <ModalBackground onClick={onClick}>
       <ModalContent>
-        <img src={Url} alt="" />
+        <img src={Url} alt="picturee" />
       </ModalContent>
     </ModalBackground>
   );

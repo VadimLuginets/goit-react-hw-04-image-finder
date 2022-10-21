@@ -56,7 +56,7 @@ export default class ImageGallery extends Component {
       });
   };
   render() {
-    const { spiner, data, showBtn } = this.state;
+    const { spiner, showBtn } = this.state;
     return (
       <div>
         {!spiner ? null : <Dna width={2200} height={2200} />}

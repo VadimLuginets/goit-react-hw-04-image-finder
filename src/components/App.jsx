@@ -30,6 +30,21 @@ export class App extends Component {
   onModalClose = () => {
     this.setState({ showLargePicture: false });
   };
+  componentDidMount() {
+    window.addEventListener('keydown', event => {
+      if (event.key === 'Escape') {
+        this.setState({ showLargePicture: false });
+      }
+    });
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('keydown', event => {
+      if (event.key === 'Escape') {
+        this.setState({ showLargePicture: false });
+      }
+    });
+  }
   render() {
     const { showLargePicture } = this.state;
     return (
