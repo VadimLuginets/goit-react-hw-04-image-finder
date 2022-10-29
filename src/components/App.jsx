@@ -1,64 +1,53 @@
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
 import { Searchbar } from './Searchbar/Searchbar';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ImageGallery from './ImageGallery/ImageGallery';
 import Modal from './Modal/Modal';
-export class App extends Component {
-  state = {
-    query: '',
-    showLargePicture: false,
-    LargePictureLink: '',
-  };
-  onSubmit = serchQuery => {
+export function App() {
+  const [query, setQuery] = useState('');
+  const [showLargePicture, setShowLargePicture] = useState(false);
+  const [largePictureLink, setLargePictureLink] = useState('');
+  const onSubmit = serchQuery => {
     if (serchQuery.trim() === '') {
       toast.error('Jesuse type something');
       return;
     }
-    this.setState({ query: serchQuery.toLowerCase().trim() });
-    console.log(this.state);
+    setQuery(serchQuery.toLowerCase().trim());
   };
-  openFullHD = event => {
+  const openFullHD = event => {
     if (event.target.tagName !== 'IMG') {
       return;
     }
-    this.setState({
-      LargePictureLink: event.target.dataset.fullscreen,
-      showLargePicture: true,
-    });
+    setLargePictureLink(event.target.dataset.fullscreen);
+    setShowLargePicture(true);
   };
-  onModalClose = () => {
-    this.setState({ showLargePicture: false });
+  const onModalClose = () => {
+    setShowLargePicture(false);
   };
-  componentDidMount() {
+  useEffect(() => {
     window.addEventListener('keydown', event => {
       if (event.key === 'Escape') {
-        this.setState({ showLargePicture: false });
+        setShowLargePicture(false);
       }
     });
-  }
+    return () => {
+      window.removeEventListener('keydown', event => {
+        if (event.key === 'Escape') {
+          setShowLargePicture(false);
+        }
+      });
+    };
+  }, []);
 
-  componentWillUnmount() {
-    window.removeEventListener('keydown', event => {
-      if (event.key === 'Escape') {
-        this.setState({ showLargePicture: false });
-      }
-    });
-  }
-  render() {
-    const { showLargePicture } = this.state;
-    return (
-      <div>
-        <Searchbar onSubmit={this.onSubmit} />
-        <ImageGallery query={this.state.query} openFullHD={this.openFullHD} />
-        {showLargePicture ? (
-          <Modal
-            Url={this.state.LargePictureLink}
-            onClick={this.onModalClose}
-          />
-        ) : null}
-        <ToastContainer />
-      </div>
-    );
-  }
+  return (
+    <div>
+      <Searchbar onSubmit={onSubmit} />
+      <ImageGallery queryProp={query} openFullHD={openFullHD} />
+      {showLargePicture ? (
+        <Modal Url={largePictureLink} onClick={onModalClose} />
+      ) : null}
+      <ToastContainer />
+    </div>
+  );
 }
