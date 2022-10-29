@@ -29,7 +29,7 @@ export default function ImageGallery({ queryProp, openFullHD }) {
         .finally(() => {
           setSpiner(false);
         });
-    }
+    } // eslint-disable-next-line
   }, [queryProp]);
   const loadMore = () => {
     setSpiner(true);
